@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lumenary — Idle treasury, working. Onchain.</title>
+<link rel="stylesheet" href="lumenary.css" />
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="#" class="brand"><span class="mk"><i></i></span>Lumenary</a>
+    <div class="nav-links">
+      <a href="#platform">Platform</a>
+      <a href="#compliance">Compliance</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-soc">
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></a>
+      </div>
+      <a href="product/Lumenary App.html" class="btn btn-ghost">Launch app <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-floor"></div>
+  <div class="wrap hero-in">
+    <div>
+      <h1 class="display">Idle treasury,<br>working. <span class="grad">Onchain.</span></h1>
+      <p class="lede" data-vary
+         data-zero="Lumenary helps Canadian businesses earn more on the cash they aren't using — fully compliant, and always yours. No crypto know-how required."
+         data-balanced="The non-custodial treasury platform for Canadian SMEs. Earn institutional yield on idle cash and let tax compliance run itself."
+         data-owned="Non-custodial DeFi treasury for Canadian SMEs. ~7% APY on stablecoins via Morpho Blue, Passkey-signed on Arbitrum, CARF-ready by default.">The non-custodial treasury platform for Canadian SMEs. Earn institutional yield on idle cash and let tax compliance run itself.</p>
+      <div class="hero-cta">
+        <a href="#cta" class="btn btn-dark">Join the private beta <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+        <a href="#platform" class="btn btn-plain">See the platform <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+      <p class="hero-note">Free during private beta · no platform fee · no lock-up</p>
+    </div>
+    <div class="hero-art">
+      <div class="coin-stage">
+        <span class="coin-glow"></span>
+        <canvas data-coins data-dark aria-label="Stablecoins en rotation"></canvas>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ TRUSTED RAILS ============ -->
+<section class="sec sec-tight">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <span class="eyebrow">Built on trusted rails</span>
+        <h2 class="h-sec serif" style="margin-top:14px">Standards your bank<br>already recognizes.</h2>
+      </div>
+      <a href="#compliance" class="btn btn-ghost">Our security model <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+    </div>
+    <div class="cellgrid rv d1">
+      <div class="cell"><span class="lg">Morpho</span></div>
+      <div class="cell"><span class="lg">Arbitrum</span></div>
+      <div class="cell"><span class="lg">Interac</span></div>
+      <div class="cell"><span class="lg">FINTRAC</span></div>
+      <div class="cell"><span class="lg">Privy <span class="sub">· Passkeys</span></span></div>
+      <div class="cell"><span class="lg">Chainlink</span></div>
+      <div class="cell empty"><span class="ring"></span></div>
+      <div class="cell empty"><span class="ring sm"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PLATFORM ============ -->
+<section class="sec" id="platform" style="padding-bottom:0">
+  <div class="wrap">
+    <h2 class="h-sec grad rv" style="max-width:18ch">A complete treasury platform for Canadian businesses.</h2>
+  </div>
+
+  <div class="wrap" style="margin-top:46px">
+    <!-- 1 Synthèse -->
+    <div class="feat rv">
+      <div class="txt">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="10" width="8" height="11" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/></svg></div>
+        <h3 class="h-feat serif">Your treasury, at a glance</h3>
+        <p class="p" data-vary
+           data-zero="A single, clear view of your balance, what it's earning, and the rate — as easy to read as a bank statement."
+           data-balanced="Live balance, accrued yield and current APY in one dashboard — clear as a bank statement, built for a CFO."
+           data-owned="Live vault balance, accrued yield (YTD) and Morpho APY in one Synthèse view, refreshed from on-chain in under five seconds.">Live balance, accrued yield and current APY in one dashboard — clear as a bank statement, built for a CFO.</p>
+        <a href="#cta" class="btn btn-dark">Learn more <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+      <div class="art"><div class="bp-cell"></div><div class="feat-canvas"><canvas data-anim="dashboard" aria-label="Synthèse — treasury dashboard"></canvas></div></div>
+    </div>
+
+    <!-- 2 Centrale Fiscale -->
+    <div class="feat flip rv">
+      <div class="txt">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M13 3v6h6M9 13h6M9 17h6"/></svg></div>
+        <h3 class="h-feat serif">Tax compliance, automated</h3>
+        <p class="p">Automated T5, weighted ACB and Grand Livre — generated continuously and ready for ARC &amp; Revenu Québec under the CARF 2026 rules.</p>
+        <a href="#cta" class="btn btn-dark">Learn more <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+      <div class="art"><div class="bp-cell"></div><div class="feat-canvas"><canvas data-anim="taxstack" aria-label="Centrale Fiscale — fiches qui s'empilent"></canvas></div></div>
+    </div>
+
+    <!-- 3 Sécurité -->
+    <div class="feat rv">
+      <div class="txt">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3l8 3v6c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h3 class="h-feat serif">Non-custodial by design</h3>
+        <p class="p" data-vary
+           data-zero="Only your team can move your money. Add co-signers, set approval thresholds, and keep a full, tamper-proof record of every action."
+           data-balanced="Passkey co-signers above a threshold you set, instant revocation, and a full immutable audit log. Lumenary never touches your funds."
+           data-owned="ERC-4337 smart-account signers with biometric Passkeys, configurable co-signature thresholds, and an append-only audit log. Keys never leave your device.">Passkey co-signers above a threshold you set, instant revocation, and a full immutable audit log. Lumenary never touches your funds.</p>
+        <a href="#compliance" class="btn btn-dark">Learn more <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+      <div class="art"><div class="bp-cell"></div><div class="feat-canvas"><canvas data-anim="shield" aria-label="Sécurité — non-custodial"></canvas></div></div>
+    </div>
+
+    <!-- 4 Paiements -->
+    <div class="feat flip rv" style="border-bottom:1px solid var(--hair)">
+      <div class="txt">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg></div>
+        <h3 class="h-feat serif">Cash in, cash out — in hours</h3>
+        <p class="p" data-vary
+           data-zero="Move Canadian dollars in and out by Interac, link your business bank account, and manage your plan — all in one place."
+           data-balanced="On- and off-ramp via Interac, linked Canadian bank accounts and Stripe billing — funded and settled in hours, not days."
+           data-owned="Paytrie on/off-ramp (Interac ≤ $9,999, EFT/OTC above), multi-account bank linking and Stripe billing — USDC settled to your vault in minutes.">On- and off-ramp via Interac, linked Canadian bank accounts and Stripe billing — funded and settled in hours, not days.</p>
+        <a href="#cta" class="btn btn-dark">Learn more <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+      <div class="art"><div class="bp-cell"></div><div class="feat-canvas"><canvas data-anim="flow" aria-label="Paiements — flux bidirectionnel"></canvas></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARATOR ============ -->
+<section class="sec compare" id="comparator">
+  <div class="wrap cmp-grid">
+    <div class="rv">
+      <span class="eyebrow">The conviction tool</span>
+      <h2 class="h-sec serif" style="margin-top:14px">See the cost of doing nothing.</h2>
+      <p class="lede" style="margin-top:18px">Your bank pays close to nothing on idle cash. The comparator puts Lumenary and a Canadian savings account on the same chart — and the gap is the whole pitch. Free, forever, even before you deposit a dollar.</p>
+      <div class="hero-cta" style="margin-top:30px">
+        <a href="#cta" class="btn btn-dark">Run your numbers <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+    </div>
+    <div class="chartcard rv d1">
+      <div class="chart-top">
+        <div class="legend">
+          <span><i class="sw"></i>Lumenary · DeFi</span>
+          <span><i class="sw flat"></i>Canadian savings · TradFi</span>
+        </div>
+        <div class="tfilter" id="tfilter">
+          <button>1M</button><button>3M</button><button class="on">YTD</button><button>1Y</button><button>ALL</button>
+        </div>
+      </div>
+      <svg id="cmpchart" viewBox="0 0 560 280" width="100%" preserveAspectRatio="none" style="display:block">
+        <defs>
+          <linearGradient id="fill" x1="0" y1="0" x2="0" y2="1">
+            <stop class="fs0" offset="0"/>
+            <stop class="fs1" offset="1"/>
+          </linearGradient>
+        </defs>
+        <g class="cgrid" stroke-width="1">
+          <line x1="0" y1="70" x2="560" y2="70"/><line x1="0" y1="140" x2="560" y2="140"/><line x1="0" y1="210" x2="560" y2="210"/>
+        </g>
+        <path id="flatline" d="M0,236 C140,233 280,231 420,229 C480,228 530,227 560,226" fill="none" stroke-width="2.4" stroke-dasharray="3 5"/>
+        <path id="defiarea" d="M0,238 C120,228 220,206 320,164 C420,122 500,78 560,46 L560,280 L0,280 Z" opacity="0"/>
+        <path id="defiline" d="M0,238 C120,228 220,206 320,164 C420,122 500,78 560,46" fill="none" stroke-width="3"/>
+      </svg>
+      <div class="delta">
+        <span class="big" id="deltaval">+$12,480</span>
+        <span class="lbl">more with Lumenary, year to date</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ METRICS ============ -->
+<section class="sec sec-tight">
+  <div class="wrap metrics rv">
+    <div class="m"><div class="mv"><span id="m-apy" data-count="7.0" data-suffix="%">7.0%</span></div><div class="mk" data-vary data-zero="Yield on idle cash" data-balanced="Current yield" data-owned="Morpho vault APY">Current yield</div></div>
+    <div class="m"><div class="mv">&lt;$0.10</div><div class="mk">Cost per deposit</div></div>
+    <div class="m"><div class="mv">~4h</div><div class="mk">Typical withdrawal to your bank</div></div>
+    <div class="m"><div class="mv"><span id="m-nc" data-count="100" data-suffix="%">100%</span></div><div class="mk" data-vary data-zero="Stays yours, always" data-balanced="Non-custodial" data-owned="Non-custodial · Passkey-signed">Non-custodial</div></div>
+  </div>
+</section>
+
+<!-- ============ COMPLIANCE ============ -->
+<section class="sec" id="compliance">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <span class="eyebrow">Trust &amp; compliance</span>
+        <h2 class="h-sec grad serif" style="margin-top:14px;max-width:16ch">Built to satisfy your auditor.</h2>
+      </div>
+      <a href="#faq" class="btn btn-ghost">Read the docs <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+    </div>
+    <p class="lede rv" style="max-width:60ch">The boring, essential parts — automated. Your money never leaves your control, your entity is verified against government registers, and every Canadian tax obligation is prepared for you.</p>
+
+    <div class="pts rv d1">
+      <div class="pt"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg></span><div><h4>Non-custodial</h4><p class="p" data-vary data-zero="Only you can move your money." data-balanced="Lumenary never holds or moves your funds." data-owned="Passkey-signed ERC-4337 smart account; keys stay in your device's secure enclave.">Lumenary never holds or moves your funds.</p></div></div>
+      <div class="pt"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg></span><div><h4>KYB verified</h4><p class="p">Your business is checked against Corporations Canada &amp; Revenu Québec at sign-up and weekly.</p></div></div>
+      <div class="pt"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg></span><div><h4>CARF 2026 ready</h4><p class="p">Automated T5, T1135 and TP-21.4.39 packs, with fair-market value captured at every transaction.</p></div></div>
+      <div class="pt"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg></span><div><h4>FINTRAC-aligned</h4><p class="p">AML obligations handled by licensed partners; records retained for six years in Canada.</p></div></div>
+    </div>
+
+    <div class="cellgrid rv d2" style="margin-top:46px">
+      <div class="cell"><span class="lg">FINTRAC</span></div>
+      <div class="cell"><span class="lg">ARC <span class="sub">/ CRA</span></span></div>
+      <div class="cell"><span class="lg">Revenu Québec</span></div>
+      <div class="cell"><span class="lg">CARF 2026</span></div>
+      <div class="cell"><span class="lg">Corp. Canada</span></div>
+      <div class="cell"><span class="lg">Paytrie</span></div>
+      <div class="cell empty"><span class="ring sm"></span></div>
+      <div class="cell empty"><span class="ring"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="faq">
+      <div class="wrap faq-grid">
+        <div class="faq-aside rv">
+          <h2 class="h-sec grad serif">Frequently asked questions</h2>
+          <div class="line"></div>
+          <p class="p" style="max-width:30ch">Can't find the answer you're looking for? Our team is here to help.</p>
+          <a href="#cta" class="btn btn-dark" style="margin-top:22px">Get in touch <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+        </div>
+        <div class="faq-list rv d1" id="faqlist">
+          <div class="qa open">
+            <div class="qa-q"><h4>Is my money safe if Lumenary disappears?</h4><span class="qa-tog"></span></div>
+            <div class="qa-a"><div class="inner">Yes. Lumenary is fully non-custodial — your funds sit in a smart account that only your team's Passkeys can move. If Lumenary ceased to exist tomorrow, your stablecoins remain entirely under your control on-chain, and you can withdraw them directly.</div></div>
+          </div>
+          <div class="qa">
+            <div class="qa-q"><h4>Do I need to understand crypto to use this?</h4><span class="qa-tog"></span></div>
+            <div class="qa-a"><div class="inner">No. You fund your account with Canadian dollars over Interac and withdraw the same way. Lumenary handles the conversion, the on-chain mechanics and the tax paperwork behind a dashboard that reads like online banking.</div></div>
+          </div>
+          <div class="qa">
+            <div class="qa-q"><h4>Is this legal and compliant in Canada?</h4><span class="qa-tog"></span></div>
+            <div class="qa-a"><div class="inner">Your business is verified against Corporations Canada and Revenu Québec, AML obligations are handled by FINTRAC-registered partners, and your tax documents (T5, T1135, TP-21.4.39) are prepared automatically under the CARF 2026 framework.</div></div>
+          </div>
+          <div class="qa">
+            <div class="qa-q"><h4>What are the fees, and is there a lock-up?</h4><span class="qa-tog"></span></div>
+            <div class="qa-a"><div class="inner">During the private beta there is no platform fee and no lock-up — you can withdraw at any time. At general availability, premium is a flat CAD monthly subscription with a performance fee on yield earned; deposits and withdrawals are never locked.</div></div>
+          </div>
+          <div class="qa">
+            <div class="qa-q"><h4>How fast can I get my cash back?</h4><span class="qa-tog"></span></div>
+            <div class="qa-a"><div class="inner">Withdrawals up to $9,999 settle to your linked Canadian bank account by Interac in roughly two to four hours. Larger amounts settle by EFT or wire within one to two business days.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta" id="cta">
+  <div class="wrap">
+    <span class="eyebrow rv">Private beta · free</span>
+    <h2 class="h-sec grad serif rv d1" style="margin-top:16px">Put your treasury to work.</h2>
+    <p class="lede rv d1">Join the Canadian businesses already earning on idle cash — with the taxes handled.</p>
+    <form class="cta-form rv d2" id="ctaform">
+      <input type="email" id="ctaemail" placeholder="name@yourcompany.ca" required />
+      <button type="submit" class="btn btn-dark">Start free <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+    </form>
+    <div class="cta-ok" id="ctaok">✓ You're on the list — we'll be in touch shortly.</div>
+    <p class="cta-note rv d2">No platform fee · no subscription · no lock-up</p>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-in">
+      <a href="#" class="brand" style="font-size:17px"><span class="mk"><i></i></span>Lumenary</a>
+      <div class="foot-links">
+        <a href="#platform">Platform</a><a href="#compliance">Compliance</a><a href="#faq">FAQ</a><a href="#">Privacy</a><a href="#">Terms</a>
+      </div>
+      <span class="foot-cc">© 2026 Lumenary · Montréal · CA-CENTRAL</span>
+    </div>
+    <p class="disc">Yields are variable and not guaranteed. Lumenary is non-custodial and does not provide financial, investment or tax advice. Digital-asset yield carries risk, including loss of principal. Figures shown are illustrative. FINTRAC compliance is provided via licensed partners.</p>
+  </div>
+</footer>
+
+<template id="__bundler_thumbnail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#1B1A16"/><path d="M50 26l9 18 18 6-18 6-9 18-9-18-18-6 18-6z" fill="#C7A24E"/></svg>
+</template>
+
+<script src="image-slot.js"></script>
+<script src="coins.js"></script>
+<script>window.__LUM_NO_MOTION_COUNT = true;</script>
+<script src="motion-lib.js"></script>
+<script src="lumenary.js"></script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="lumenary-tweaks.jsx"></script>
+</body>
+</html>

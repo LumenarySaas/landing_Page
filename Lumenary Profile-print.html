@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lumenary — Photo de profil (PDF)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+@page{ size:1000px 1000px; margin:0; }
+html,body{width:1000px;height:1000px}
+body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.ic{
+  position:relative;width:1000px;height:1000px;overflow:hidden;
+  display:grid;place-items:center;
+  background:radial-gradient(120% 120% at 50% 42%, #1d1a13 0%, #141209 52%, #0d0c08 100%);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+}
+/* warm luminary glow behind the mark */
+.ic .glow{position:absolute;width:62%;height:62%;border-radius:50%;
+  background:radial-gradient(circle, rgba(199,162,78,.34) 0%, rgba(199,162,78,.10) 38%, transparent 66%);
+  filter:blur(2px)}
+/* faint halo ring */
+.ic .ring{position:absolute;width:70%;height:70%;border-radius:50%;border:1px solid rgba(241,237,224,.08)}
+.ic .mk{position:relative;width:42%;height:42%;fill:#F1EDE0}
+</style>
+</head>
+<body>
+<div class="ic">
+  <span class="glow"></span>
+  <span class="ring"></span>
+  <svg class="mk" viewBox="-100 -100 200 200" aria-label="Lumenary">
+    <path d="M0,-100 L27,-27 L100,0 L27,27 L0,100 L-27,27 L-100,0 L-27,-27 Z" />
+  </svg>
+</div>
+<script>
+window.addEventListener('load', function () {
+  Promise.resolve(document.fonts && document.fonts.ready).then(function () {
+    setTimeout(function () { window.print(); }, 400);
+  });
+});
+</script>
+</body>
+</html>

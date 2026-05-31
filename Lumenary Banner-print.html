@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lumenary — Bannière (PDF)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet" />
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --cream:#F1EDE0; --cream-55:rgba(241,237,224,.58); --cream-25:rgba(241,237,224,.30); --cream-12:rgba(241,237,224,.12);
+  --gold:#C7A24E;
+  --sans:"Hanken Grotesk",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --serif:"Newsreader",Georgia,serif;
+}
+@page{ size:1280px 440px; margin:0; }
+html,body{width:1280px;height:440px}
+body{font-family:var(--sans);-webkit-font-smoothing:antialiased;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+
+.banner{
+  container-type:inline-size;
+  width:1280px;height:440px;position:relative;overflow:hidden;
+  background:radial-gradient(120% 140% at 78% 18%, #1b1812 0%, #131210 46%, #0f0e0a 100%);
+  display:grid;grid-template-columns:1.08fr .92fr;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+}
+.banner::before{
+  content:"";position:absolute;inset:0;opacity:.5;pointer-events:none;
+  background:
+    linear-gradient(var(--cream-12) 1px,transparent 1px) 0 0/100% 11.2cqw,
+    linear-gradient(90deg,var(--cream-12) 1px,transparent 1px) 0 0/11.2cqw 100%;
+  -webkit-mask:radial-gradient(120% 120% at 80% 20%,#000,transparent 62%);
+          mask:radial-gradient(120% 120% at 80% 20%,#000,transparent 62%);
+}
+.copy{position:relative;z-index:2;padding:6.6cqw 0 6.6cqw 6.6cqw;display:flex;flex-direction:column;justify-content:center;gap:2.4cqw}
+.lock{display:flex;align-items:center;gap:1.5cqw}
+.lock .mk{width:4cqw;height:4cqw;flex:none;fill:var(--cream)}
+.lock .wm{font-weight:600;font-size:4.6cqw;letter-spacing:-.03em;color:var(--cream);line-height:1}
+.tagline{font-family:var(--serif);font-weight:400;font-size:2.7cqw;line-height:1.08;letter-spacing:-.02em;color:var(--cream);max-width:20ch}
+.tagline em{font-style:normal;color:var(--gold)}
+.cta-row{display:flex;align-items:center;gap:1.6cqw;margin-top:1cqw}
+.btn{display:inline-flex;align-items:center;gap:.9cqw;font-family:var(--sans);font-weight:500;font-size:1.35cqw;
+  background:var(--gold);color:#1a1407;padding:1.1cqw 1.1cqw 1.1cqw 1.7cqw;border-radius:100px;text-decoration:none}
+.btn .ci{width:1.9cqw;height:1.9cqw;border-radius:50%;display:grid;place-items:center;background:rgba(26,20,7,.18)}
+.btn .ci svg{width:1.05cqw;height:1.05cqw;stroke:#1a1407}
+.sub{font-family:var(--mono);font-size:1.05cqw;color:var(--cream-25)}
+.loaderwrap{position:relative;z-index:2;display:grid;place-items:center}
+.loaderwrap .cv{width:62%;aspect-ratio:1}
+.banner canvas{display:block;width:100%;height:100%}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="lum-star" viewBox="-100 -100 200 200"><path d="M0,-100 L27,-27 L100,0 L27,27 L0,100 L-27,27 L-100,0 L-27,-27 Z" /></symbol>
+</defs></svg>
+
+<div class="banner">
+  <div class="copy">
+    <div class="lock">
+      <svg class="mk"><use href="#lum-star" /></svg>
+      <span class="wm">Lumenary</span>
+    </div>
+    <div class="tagline">Idle treasury, working. <em>Onchain.</em></div>
+    <div class="cta-row">
+      <a href="#" class="btn">Join the private beta <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      <span class="sub">no fee · no lock-up</span>
+    </div>
+  </div>
+  <div class="loaderwrap">
+    <div class="cv"><canvas data-logo="hero" data-dark data-frozen aria-label="Lumenary"></canvas></div>
+  </div>
+</div>
+
+<script src="logo.js"></script>
+<script>
+window.addEventListener('load', function () {
+  Promise.resolve(document.fonts && document.fonts.ready).then(function () {
+    setTimeout(function () { window.print(); }, 600);
+  });
+});
+</script>
+</body>
+</html>
