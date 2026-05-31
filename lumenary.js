@@ -118,6 +118,7 @@
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
         email: emailVal,
+        name: emailVal.split('@')[0],
         _subject: 'New Lumenary beta signup',
         _autoresponse: [
           'Hi ' + emailVal.split('@')[0] + ',',
@@ -146,9 +147,17 @@
         _captcha: 'false'
       })
     })
-    .finally(function () {
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      console.log('Formsubmit response:', data);
       form.style.display = 'none';
       document.getElementById('ctaok').classList.add('show');
+    })
+    .catch(function (err) {
+      console.error('Formsubmit error:', err);
+      btn.disabled = false;
+      btn.textContent = 'Start free';
+      alert('Something went wrong. Please try again or email us at lumenarysaas@gmail.com');
     });
   });
 
