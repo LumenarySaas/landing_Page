@@ -113,7 +113,7 @@
     btn.disabled = true;
     btn.textContent = 'Sending…';
 
-    fetch('https://formsubmit.co/ajax/lumenarysaas@gmail.com', {
+    fetch('https://formsubmit.co/ajax/' + LUM_CONFIG.formsubmitEmail, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
@@ -157,7 +157,7 @@
       console.error('Formsubmit error:', err);
       btn.disabled = false;
       btn.textContent = 'Start free';
-      alert('Something went wrong. Please try again or email us at lumenarysaas@gmail.com');
+      alert('Something went wrong. Please try again or email us at ' + LUM_CONFIG.supportEmail);
     });
   });
 
