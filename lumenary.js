@@ -119,7 +119,30 @@
       body: JSON.stringify({
         email: emailVal,
         _subject: 'New Lumenary beta signup',
-        _autoresponse: 'Hi ' + emailVal.split('@')[0] + ',\n\nWelcome to Lumenary\'s private beta! You\'re on the list and we\'ll be in touch shortly.\n\nNo platform fee · no lock-up · always yours.\n\n— The Lumenary Team',
+        _autoresponse: [
+          'Hi ' + emailVal.split('@')[0] + ',',
+          '',
+          'Thank you for joining Lumenary\'s private beta. We\'re delighted to welcome you to a growing community of Canadian businesses that are putting their idle treasury to work — compliantly, securely, and without the complexity.',
+          '',
+          'Here is what you can expect next:',
+          '',
+          '  1. Our team will review your registration and reach out within 1–2 business days with your onboarding details.',
+          '  2. You will receive early access to the platform at no cost — no platform fee, no subscription, and no lock-up during the beta period.',
+          '  3. A dedicated onboarding specialist will walk you through your first deposit, dashboard setup, and tax configuration at your convenience.',
+          '',
+          'In the meantime, if you have any questions or would like to speak with someone on the team, please do not hesitate to reply to this email or reach us directly at lumenarysaas@gmail.com.',
+          '',
+          'We look forward to helping your business earn more on the cash it isn\'t using.',
+          '',
+          'Warm regards,',
+          '',
+          'The Lumenary Team',
+          'Montréal, Canada',
+          'lumenarysaas@gmail.com',
+          '',
+          '---',
+          'Lumenary is a non-custodial treasury platform for Canadian SMEs. Yields are variable and not guaranteed. This message was sent because you signed up for the Lumenary private beta.'
+        ].join('\n'),
         _captcha: 'false'
       })
     })
