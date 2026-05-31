@@ -106,9 +106,27 @@
   var form = document.getElementById('ctaform');
   if (form) form.addEventListener('submit', function (e) {
     e.preventDefault();
-    if (!document.getElementById('ctaemail').value) return;
-    form.style.display = 'none';
-    document.getElementById('ctaok').classList.add('show');
+    var emailVal = document.getElementById('ctaemail').value;
+    if (!emailVal) return;
+
+    var btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    fetch('https://formsubmit.co/ajax/lumenarysaas@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        email: emailVal,
+        _subject: 'New Lumenary beta signup',
+        _autoresponse: 'Hi ' + emailVal.split('@')[0] + ',\n\nWelcome to Lumenary\'s private beta! You\'re on the list and we\'ll be in touch shortly.\n\nNo platform fee · no lock-up · always yours.\n\n— The Lumenary Team',
+        _captcha: 'false'
+      })
+    })
+    .finally(function () {
+      form.style.display = 'none';
+      document.getElementById('ctaok').classList.add('show');
+    });
   });
 
   /* ---- jargon / variant API (used by Tweaks) ---- */
