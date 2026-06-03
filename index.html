@@ -145,7 +145,7 @@
       <h2 class="h-sec serif" style="margin-top:14px">See the cost of doing nothing.</h2>
       <p class="lede" style="margin-top:18px">Your bank pays close to nothing on idle cash. The comparator puts Lumenary and a Canadian savings account on the same chart — and the gap is the whole pitch. Free, forever, even before you deposit a dollar.</p>
       <div class="hero-cta" style="margin-top:30px">
-        <a href="#cta" class="btn btn-dark">Run your numbers <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+        <a href="#simulator" id="open-sim" class="btn btn-dark">Run your numbers <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
       </div>
     </div>
     <div class="chartcard rv d1">
@@ -175,6 +175,58 @@
       <div class="delta">
         <span class="big" id="deltaval">+$12,480</span>
         <span class="lbl">more with Lumenary, year to date</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SIMULATOR ============ -->
+<section class="sec sim-section" id="simulator">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Historical yield simulator</span>
+        <h2 class="h-sec grad" style="margin-top:14px">Run the numbers on real vault data.</h2>
+      </div>
+    </div>
+    <div class="sim-card">
+      <div class="sim-inputs">
+        <div class="sim-row">
+          <div class="sim-field">
+            <label for="sim-amount">Deposit amount (USD)</label>
+            <input type="number" id="sim-amount" value="100000" min="1" step="1000">
+          </div>
+          <div class="sim-field">
+            <label for="sim-vault">Vault</label>
+            <select id="sim-vault"></select>
+          </div>
+        </div>
+        <div class="sim-row">
+          <div class="sim-field">
+            <label for="sim-start">Start date</label>
+            <input type="date" id="sim-start">
+          </div>
+          <div class="sim-field">
+            <label for="sim-end">End date</label>
+            <input type="date" id="sim-end">
+          </div>
+        </div>
+        <button id="sim-run" class="btn btn-dark" style="margin-top:4px;align-self:flex-start">
+          <span class="sim-btn-text">Simulate</span>
+          <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+      </div>
+      <div id="sim-error" class="sim-error" style="display:none"></div>
+      <div id="sim-results" style="display:none">
+        <div class="sim-stats">
+          <div class="sim-stat"><div class="sim-stat-v" id="sim-final">—</div><div class="sim-stat-k">Earned</div></div>
+          <div class="sim-stat"><div class="sim-stat-v" id="sim-gain">—</div><div class="sim-stat-k">Portfolio value</div></div>
+          <div class="sim-stat"><div class="sim-stat-v" id="sim-pct">—</div><div class="sim-stat-k">Return</div></div>
+          <div class="sim-stat"><div class="sim-stat-v grad" id="sim-apy">—</div><div class="sim-stat-k">Annualised APY</div></div>
+        </div>
+        <div class="sim-chart-wrap">
+          <svg id="sim-chart" viewBox="0 0 560 240" width="100%" preserveAspectRatio="none" style="display:block;overflow:visible"></svg>
+        </div>
       </div>
     </div>
   </div>
@@ -299,6 +351,7 @@
 <script>window.__LUM_NO_MOTION_COUNT = true;</script>
 <script src="motion-lib.js"></script>
 <script src="lumenary.js"></script>
+<script src="simulator.js"></script>
 
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
