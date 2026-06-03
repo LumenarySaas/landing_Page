@@ -113,48 +113,19 @@
     btn.disabled = true;
     btn.textContent = 'Sending…';
 
-    fetch('https://formsubmit.co/ajax/' + LUM_CONFIG.formsubmitEmail, {
+    fetch('/api/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        email: emailVal,
-        name: emailVal.split('@')[0],
-        _subject: 'New Lumenary beta signup',
-        _autoresponse: [
-          'Hi ' + emailVal.split('@')[0] + ',',
-          '',
-          'Thank you for joining Lumenary\'s private beta. We\'re delighted to welcome you to a growing community of Canadian businesses that are putting their idle treasury to work — compliantly, securely, and without the complexity.',
-          '',
-          'Here is what you can expect next:',
-          '',
-          '  1. Our team will review your registration and reach out within 1–2 business days with your onboarding details.',
-          '  2. You will receive early access to the platform at no cost — no platform fee, no subscription, and no lock-up during the beta period.',
-          '  3. A dedicated onboarding specialist will walk you through your first deposit, dashboard setup, and tax configuration at your convenience.',
-          '',
-          'In the meantime, if you have any questions or would like to speak with someone on the team, please do not hesitate to reply to this email or reach us directly at lumenarysaas@gmail.com.',
-          '',
-          'We look forward to helping your business earn more on the cash it isn\'t using.',
-          '',
-          'Warm regards,',
-          '',
-          'The Lumenary Team',
-          'Montréal, Canada',
-          'lumenarysaas@gmail.com',
-          '',
-          '---',
-          'Lumenary is a non-custodial treasury platform for Canadian SMEs. Yields are variable and not guaranteed. This message was sent because you signed up for the Lumenary private beta.'
-        ].join('\n'),
-        _captcha: 'false'
-      })
+      body: JSON.stringify({ email: emailVal })
     })
     .then(function (res) { return res.json(); })
     .then(function (data) {
-      console.log('Formsubmit response:', data);
+      if (!data.success) throw new Error(data.error || 'Unknown error');
       form.style.display = 'none';
       document.getElementById('ctaok').classList.add('show');
     })
     .catch(function (err) {
-      console.error('Formsubmit error:', err);
+      console.error('Signup error:', err);
       btn.disabled = false;
       btn.textContent = 'Start free';
       alert('Something went wrong. Please try again or email us at ' + LUM_CONFIG.supportEmail);
