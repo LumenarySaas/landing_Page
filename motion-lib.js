@@ -861,7 +861,376 @@
     };
   }
 
-  var anims = { rails: rails, yieldCurve: yieldCurve, vault: vault, compareChart: compareChart, dashboard: dashboard, taxstack: taxstack, security: security, payments: payments, sparkline: sparkline, ledger: ledger, shield: shield, flow: flow, separator: separator, ambient: ambient };
+/* ======================================================
+     VAULTLOCK (rich) — ajar door swings shut, dial spins, bolts seat
+     ====================================================== */
+  function vaultlock() {
+    var streaks;
+    function easeOut(p) { return 1 - Math.pow(1 - p, 3); }
+    function easeIO(x) { return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; }
+    var LOOP = 6.8, OPEN = 1.18;
+    return {
+      init: function () { streaks = makeStreaks(14, 6); },
+      render: function (ctx, t, dt, w, h, hov, ink) {
+        var P = Math.max(16, Math.min(w, h) * 0.07);
+        // ---- header chrome (matches other feature cards) ----
+        ctx.textBaseline = "alphabetic";
+        ctx.font = "500 " + Math.max(9, w * 0.0135) + "px 'JetBrains Mono', ui-monospace, monospace";
+        ctx.textAlign = "left"; ctx.fillStyle = ink(0.5);
+        ctx.fillText("SÉCURITÉ · NON-CUSTODIAL", P, P + 4);
+        var sx = w - P, sp = (t * 0.7) % 1;
+        ctx.beginPath(); ctx.arc(sx - 5, P, 2.4, 0, TAU); ctx.fillStyle = ink(0.55); ctx.fill();
+        ctx.beginPath(); ctx.arc(sx - 5, P, 2.4 + sp * 6, 0, TAU); ctx.strokeStyle = ink(0.3 * (1 - sp)); ctx.lineWidth = 1; ctx.stroke();
+        var dy = P + P * 0.55;
+        ctx.strokeStyle = ink(0.1); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(P, dy); ctx.lineTo(w - P, dy); ctx.stroke();
+
+        // ---- timeline ----
+        var lt = REDUCE ? 4.9 : (t % LOOP);
+        var theta, locked = false;
+        if (lt < 1.15) theta = OPEN + 0.03 * Math.sin(t * 1.4);        // ajar hold
+        else if (lt < 2.75) theta = OPEN * (1 - easeIO((lt - 1.15) / 1.6)); // swing shut
+        else { theta = 0; locked = true; }                              // sealed
+        var lp = Math.max(0, Math.min(1, (lt - 2.75) / 1.7));           // lock progress
+        var boltOut = Math.max(0, Math.min(1, (lt - 2.8) / 0.75)); boltOut = easeOut(boltOut);
+        var spinExtra = 3.0 * TAU * easeOut(lp);
+        var dial = t * 0.3 + spinExtra;
+        var pulse = locked ? Math.exp(-Math.pow((lt - 3.28) / 0.16, 2)) : 0;
+        var vis = REDUCE ? 1 : (lt < 0.4 ? lt / 0.4 : (lt > LOOP - 0.55 ? (LOOP - lt) / 0.55 : 1));
+
+        // ---- geometry ----
+        var availH = h - dy - P * 1.6;
+        var cx = w / 2, cy = dy + availH / 2 + P * 0.25;
+        var R = Math.max(26, Math.min(availH * 0.40, w * 0.22));
+        var xh = cx - R;                          // hinge (left)
+        var cosT = Math.cos(theta), rx = R * Math.max(0.04, cosT), cxd = xh + R * cosT;
+
+        ctx.save(); ctx.globalAlpha = vis;
+
+        // ---- cavity (interior behind the door) ----
+        ctx.beginPath(); ctx.arc(cx, cy, R * 0.97, 0, TAU); ctx.fillStyle = ink(0.075); ctx.fill();
+        ctx.strokeStyle = ink(0.11); ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.arc(cx, cy, R * 0.7, 0, TAU); ctx.stroke();
+        ctx.beginPath(); ctx.arc(cx, cy, R * 0.44, 0, TAU); ctx.stroke();
+        // the funds: a soft star glow inside
+        var glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 0.6);
+        glow.addColorStop(0, ink(0.16)); glow.addColorStop(1, ink(0));
+        ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(cx, cy, R * 0.6, 0, TAU); ctx.fill();
+        star(ctx, cx, cy, R * 0.15 * (1 + 0.05 * Math.sin(t * 1.3)), 0.5);
+
+        // ---- frame rim + frame bolts ----
+        ctx.strokeStyle = ink(0.28); ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(cx, cy, R * 1.06, 0, TAU); ctx.stroke();
+        for (var fb = 0; fb < 16; fb++) {
+          var fa = fb / 16 * TAU;
+          ctx.beginPath(); ctx.arc(cx + Math.cos(fa) * R * 1.06, cy + Math.sin(fa) * R * 1.06, 1.3, 0, TAU);
+          ctx.fillStyle = ink(0.22); ctx.fill();
+        }
+
+        // ---- bolts seating into the frame (only when nearly closed) ----
+        var boltAlpha = boltOut * (1 - Math.min(1, theta / OPEN));
+        if (boltAlpha > 0.01) {
+          ctx.lineCap = "round"; ctx.strokeStyle = ink(0.6); ctx.lineWidth = Math.max(3, R * 0.07);
+          ctx.globalAlpha = vis * boltAlpha;
+          for (var bd = 0; bd < 4; bd++) {
+            var ba = bd / 4 * TAU + Math.PI / 4;
+            var r0 = R * 0.74, r1 = R * (0.9 + 0.16 * boltOut);
+            ctx.beginPath();
+            ctx.moveTo(cx + Math.cos(ba) * r0, cy + Math.sin(ba) * r0);
+            ctx.lineTo(cx + Math.cos(ba) * r1, cy + Math.sin(ba) * r1);
+            ctx.stroke();
+          }
+          ctx.globalAlpha = vis;
+        }
+
+        // ---- the door (foreshortened ellipse via x-scale = cosθ) ----
+        ctx.save();
+        ctx.translate(cxd, cy); ctx.scale(Math.max(0.04, cosT), 1);
+        // shadow gap on the hinge side while opening
+        ctx.beginPath(); ctx.arc(0, 0, R, 0, TAU); ctx.fillStyle = ink(0.05); ctx.fill();
+        ctx.strokeStyle = ink(0.55); ctx.lineWidth = 2 / Math.max(0.18, cosT); // keep rim weight ~constant
+        ctx.beginPath(); ctx.arc(0, 0, R, 0, TAU); ctx.stroke();
+        ctx.strokeStyle = ink(0.14); ctx.lineWidth = 1 / Math.max(0.18, cosT);
+        ctx.beginPath(); ctx.arc(0, 0, R * 0.84, 0, TAU); ctx.stroke();
+        // door bolts ring
+        for (var db = 0; db < 12; db++) {
+          var da = db / 12 * TAU;
+          ctx.beginPath(); ctx.arc(Math.cos(da) * R * 0.9, Math.sin(da) * R * 0.9, 1.4, 0, TAU);
+          ctx.fillStyle = ink(0.22); ctx.fill();
+        }
+        // spinning dial spokes
+        ctx.strokeStyle = ink(0.32); ctx.lineWidth = Math.max(1.6, R * 0.035); ctx.lineCap = "round";
+        for (var s = 0; s < 6; s++) {
+          var sa2 = dial + s / 6 * TAU;
+          ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(sa2) * R * 0.6, Math.sin(sa2) * R * 0.6); ctx.stroke();
+        }
+        // dial handle knobs
+        for (var k = 0; k < 6; k++) {
+          var ka = dial + k / 6 * TAU;
+          ctx.beginPath(); ctx.arc(Math.cos(ka) * R * 0.6, Math.sin(ka) * R * 0.6, Math.max(2, R * 0.045), 0, TAU);
+          ctx.fillStyle = ink(0.4); ctx.fill();
+        }
+        // hub + star
+        ctx.beginPath(); ctx.arc(0, 0, R * 0.22, 0, TAU); ctx.fillStyle = ink(0.06); ctx.fill();
+        ctx.beginPath(); ctx.arc(0, 0, R * 0.22, 0, TAU); ctx.strokeStyle = ink(0.55); ctx.lineWidth = 1 / Math.max(0.18, cosT); ctx.stroke();
+        star(ctx, 0, 0, R * 0.11 * (1 + 0.05 * Math.sin(t * 1.4)), 0.9);
+        ctx.restore();
+
+        // ---- souffle around the core (spikes on lock seat) ----
+        drawWhirl(ctx, t, cx, cy, streaks, 0.5 + hov + pulse * 1.6);
+        // lock flash ring
+        if (pulse > 0.02) {
+          ctx.globalAlpha = vis * pulse;
+          ctx.strokeStyle = ink(0.5); ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.arc(cx, cy, R * (1.08 + 0.18 * (1 - pulse)), 0, TAU); ctx.stroke();
+          ctx.globalAlpha = vis;
+        }
+        ctx.restore();
+
+        // ---- state caption ----
+        ctx.font = "500 " + Math.max(8, w * 0.0108) + "px 'JetBrains Mono', ui-monospace, monospace";
+        ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+        var label = locked ? "LOCKED · YOU HOLD THE KEYS" : (lt < 1.15 ? "VAULT OPEN" : "SEALING…");
+        ctx.fillStyle = ink(0.42); ctx.fillText(label, P, h - P + 2);
+      }
+    };
+  }
+
+  /* ======================================================
+     LUMI (rich) — grounded RAG copilot: star queries a verified
+     corpus, an answer composes with a cursor, a "verified" badge seats
+     ====================================================== */
+  function lumi() {
+    var streaks;
+    function easeBack(p) { var c = 1.9; return 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2); }
+    var SRC = ["RÉGLEMENTATION", "GOUVERNEMENT", "PROTOCOLE", "FISCALITÉ", "KYB / AML", "PARTENAIRES"];
+    var CASES = [
+      { ok: true,
+        q: "> What are the gas fees?",
+        a: "Gas on Arbitrum runs under $0.10 per deposit. Lumenary batches settlements to keep fees minimal.",
+        cap: "GROUNDED · CITED FROM VERIFIED SOURCES", cited: [2, 5] },
+      { ok: false,
+        q: "> Should I move my treasury now?",
+        a: "I can't give financial advice. I can only explain how Lumenary works, citing verified sources.",
+        cap: "OUT OF SCOPE · NO FINANCIAL ADVICE", cited: [] }
+    ];
+    var LOOP = 9.2;
+    /* clear document glyph (bigger, more legible); isPartner = stacked docs */
+    function drawDoc(ctx, x, y, nr, lit, isPartner, ink, inkGold) {
+      var dw = nr * 1.5, dh = nr * 1.86, fold = dw * 0.32;
+      function shape(ox, oy) {
+        ctx.beginPath();
+        ctx.moveTo(x + ox - dw / 2, y + oy - dh / 2);
+        ctx.lineTo(x + ox + dw / 2 - fold, y + oy - dh / 2);
+        ctx.lineTo(x + ox + dw / 2, y + oy - dh / 2 + fold);
+        ctx.lineTo(x + ox + dw / 2, y + oy + dh / 2);
+        ctx.lineTo(x + ox - dw / 2, y + oy + dh / 2);
+        ctx.closePath();
+      }
+      if (isPartner) { // back doc offset
+        shape(dw * 0.26, -dh * 0.12);
+        ctx.fillStyle = ink(0.07); ctx.fill();
+        ctx.strokeStyle = lit ? inkGold(0.6) : ink(0.4); ctx.lineWidth = 1.4; ctx.lineJoin = "round"; ctx.stroke();
+      }
+      shape(0, 0);
+      ctx.fillStyle = ink(lit ? 0.13 : 0.075); ctx.fill();
+      ctx.strokeStyle = lit ? inkGold(0.95) : ink(0.55); ctx.lineWidth = 1.6; ctx.lineJoin = "round"; ctx.stroke();
+      // folded-corner crease
+      ctx.beginPath();
+      ctx.moveTo(x + dw / 2 - fold, y - dh / 2); ctx.lineTo(x + dw / 2 - fold, y - dh / 2 + fold); ctx.lineTo(x + dw / 2, y - dh / 2 + fold);
+      ctx.strokeStyle = lit ? inkGold(0.6) : ink(0.32); ctx.lineWidth = 1.2; ctx.stroke();
+      // content lines
+      var px = x - dw / 2 + dw * 0.18, pw = dw * 0.62;
+      ctx.strokeStyle = ink(lit ? 0.4 : 0.26); ctx.lineWidth = Math.max(1.3, nr * 0.09); ctx.lineCap = "round";
+      for (var ln = 0; ln < 3; ln++) {
+        var yy = y - dh * 0.06 + ln * dh * 0.22, ww = pw * (ln === 2 ? 0.6 : 1);
+        ctx.beginPath(); ctx.moveTo(px, yy); ctx.lineTo(px + ww, yy); ctx.stroke();
+      }
+      if (isPartner) { // small integration link badge
+        ctx.beginPath(); ctx.arc(x - dw * 0.34, y - dh * 0.34, nr * 0.2, 0, TAU);
+        ctx.fillStyle = lit ? inkGold(0.9) : ink(0.5); ctx.fill();
+      }
+    }
+    return {
+      init: function () { streaks = makeStreaks(15, 6); },
+      render: function (ctx, t, dt, w, h, hov, ink) {
+        var P = Math.max(16, Math.min(w, h) * 0.07);
+        function inkGold(a) { return "rgba(154,122,51," + a + ")"; }
+        // header chrome
+        ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
+        ctx.font = "500 " + Math.max(9, w * 0.0135) + "px 'JetBrains Mono', ui-monospace, monospace";
+        ctx.fillStyle = ink(0.5); ctx.fillText("LUMI · RAG COPILOT", P, P + 4);
+        var sp = (t * 0.7) % 1, sx = w - P;
+        ctx.beginPath(); ctx.arc(sx - 5, P, 2.4, 0, TAU); ctx.fillStyle = ink(0.55); ctx.fill();
+        ctx.beginPath(); ctx.arc(sx - 5, P, 2.4 + sp * 6, 0, TAU); ctx.strokeStyle = ink(0.3 * (1 - sp)); ctx.lineWidth = 1; ctx.stroke();
+        var dy = P + P * 0.55;
+        ctx.strokeStyle = ink(0.1); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(P, dy); ctx.lineTo(w - P, dy); ctx.stroke();
+
+        var lt = REDUCE ? 6.0 : (t % LOOP);
+        var cycle = REDUCE ? 0 : Math.floor(t / LOOP) % 2;
+        var C = CASES[cycle];
+        // phases
+        var pQuery = Math.min(1, lt / 1.4);
+        var pFlow = Math.max(0, Math.min(1, (lt - 1.4) / 0.6));      // star -> bubble
+        var pAnswer = Math.max(0, Math.min(1, (lt - 2.0) / 3.6));     // typing
+        var pBadge = Math.max(0, Math.min(1, (lt - 6.0) / 0.7));      // verdict badge
+        var retrieving = lt < 1.9;
+        var vis = REDUCE ? 1 : (lt < 0.4 ? lt / 0.4 : (lt > LOOP - 0.6 ? (LOOP - lt) / 0.6 : 1));
+        ctx.save(); ctx.globalAlpha = vis;
+
+        var usableW = w - 2 * P;
+        var contentTop = dy + P * 0.45, contentBot = h - P * 1.15;
+        var coreX = P + usableW * 0.31, coreY = (contentTop + contentBot) / 2;
+        var coreR = Math.max(14, Math.min(Math.min(w, h) * 0.072, (contentBot - contentTop) * 0.34));
+
+        // ---- source nodes fanned on the LEFT of the star (consultation) ----
+        var N = SRC.length, orad = Math.min(coreR * 2.7, (contentBot - contentTop) * 0.46);
+        var active = retrieving ? Math.floor((lt * 3.2) % N) : -1;
+        var nodes = [];
+        for (var i = 0; i < N; i++) {
+          var a = Math.PI * 0.58 + (i / (N - 1)) * Math.PI * 0.84;
+          nodes.push({ x: coreX + Math.cos(a) * orad, y: coreY + Math.sin(a) * orad });
+        }
+        for (i = 0; i < N; i++) {
+          var n = nodes[i], isCited = C.cited.indexOf(i) >= 0;
+          var lit = (i === active) || (!retrieving && isCited && C.ok);
+          ctx.strokeStyle = ink(0.09 + (lit ? 0.16 : 0.03) * pQuery); ctx.lineWidth = lit ? 1.5 : 1;
+          ctx.beginPath(); ctx.moveTo(coreX, coreY); ctx.lineTo(n.x, n.y); ctx.stroke();
+          if (i === active) { // retrieval dot source -> star
+            var fp = (t * 1.0) % 1;
+            ctx.beginPath(); ctx.arc(n.x + (coreX - n.x) * fp, n.y + (coreY - n.y) * fp, 2.8, 0, TAU);
+            ctx.fillStyle = inkGold(0.9); ctx.fill();
+          }
+          drawDoc(ctx, n.x, n.y, coreR * 0.42, lit, i === N - 1, ink, inkGold);
+          if (i === active) {
+            ctx.font = "500 " + Math.max(7, w * 0.0092) + "px 'JetBrains Mono', ui-monospace, monospace";
+            ctx.fillStyle = inkGold(0.9); ctx.textAlign = "right";
+            ctx.fillText(SRC[i], n.x - coreR * 0.5, n.y + 3); ctx.textAlign = "left";
+          }
+        }
+
+        // souffle + core star
+        drawWhirl(ctx, t, coreX, coreY, streaks, 0.55 + hov + pQuery * 0.5);
+        ctx.beginPath(); ctx.arc(coreX, coreY, coreR * 1.45, 0, TAU); ctx.strokeStyle = ink(0.1); ctx.lineWidth = 1; ctx.stroke();
+        ctx.beginPath(); ctx.arc(coreX, coreY, coreR * 0.9, 0, TAU); ctx.fillStyle = ink(0.06); ctx.fill();
+        star(ctx, coreX, coreY, coreR * 0.58 * (1 + 0.05 * Math.sin(t * 1.6)), 0.92);
+
+        // ---- the gap channel: connector star -> bubble with flowing dots ----
+        var bx = P + usableW * 0.53, bw = (w - P) - bx;
+        var chX0 = coreX + coreR * 1.5, chX1 = bx;
+        ctx.strokeStyle = ink(0.12); ctx.lineWidth = 1.4; ctx.setLineDash([2, 5]);
+        ctx.beginPath(); ctx.moveTo(chX0, coreY); ctx.lineTo(chX1, coreY); ctx.stroke(); ctx.setLineDash([]);
+        if (pFlow > 0 && pAnswer < 1) { // answer flowing into the bubble
+          for (var fd = 0; fd < 3; fd++) {
+            var ff = ((t * 0.8 + fd / 3) % 1);
+            ctx.globalAlpha = vis * pFlow * (1 - Math.abs(ff - 0.5) * 1.2);
+            ctx.beginPath(); ctx.arc(chX0 + (chX1 - chX0) * ff, coreY, 2.8, 0, TAU);
+            ctx.fillStyle = inkGold(0.9); ctx.fill();
+          }
+          ctx.globalAlpha = vis;
+        }
+
+        // ---- right: answer bubble with real mono typing ----
+        if (bw > 80) {
+          var bh = contentBot - contentTop, by = contentTop, rr = 12;
+          ctx.beginPath();
+          ctx.moveTo(bx + rr, by); ctx.arcTo(bx + bw, by, bx + bw, by + bh, rr);
+          ctx.arcTo(bx + bw, by + bh, bx, by + bh, rr); ctx.arcTo(bx, by + bh, bx, by, rr);
+          ctx.arcTo(bx, by, bx + bw, by, rr); ctx.closePath();
+          ctx.fillStyle = ink(0.035); ctx.fill(); ctx.strokeStyle = ink(0.16); ctx.lineWidth = 1; ctx.stroke();
+          // tail toward the star
+          ctx.beginPath(); ctx.moveTo(bx, coreY - bh * 0.06); ctx.lineTo(bx - 9, coreY); ctx.lineTo(bx, coreY + bh * 0.06); ctx.closePath();
+          ctx.fillStyle = ink(0.035); ctx.fill(); ctx.strokeStyle = ink(0.16); ctx.stroke();
+
+          var pad = Math.max(13, bw * 0.05), lx = bx + pad, innerW = bw - 2 * pad;
+          var qFont = Math.max(10, Math.min(w * 0.0135, 15));
+          var aFont = Math.max(11, Math.min(w * 0.0165, 18));
+          var lineH = aFont * 1.5;
+          // prompt (always shown) + divider
+          ctx.font = "500 " + qFont + "px 'JetBrains Mono', ui-monospace, monospace";
+          ctx.fillStyle = ink(0.42); ctx.textAlign = "left";
+          ctx.fillText(C.q, lx, by + pad + qFont);
+          var divY = by + pad + qFont * 1.7;
+          ctx.strokeStyle = ink(0.1); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(lx, divY); ctx.lineTo(lx + innerW, divY); ctx.stroke();
+
+          // wrap answer to innerW
+          ctx.font = "500 " + aFont + "px 'JetBrains Mono', ui-monospace, monospace";
+          var wd = C.a.split(" "), lines = [], cur = "";
+          for (var wi = 0; wi < wd.length; wi++) {
+            var test = cur ? cur + " " + wd[wi] : wd[wi];
+            if (ctx.measureText(test).width > innerW && cur) { lines.push(cur); cur = wd[wi]; }
+            else cur = test;
+          }
+          if (cur) lines.push(cur);
+          var totalChars = lines.join("").length;
+          var revealed = Math.floor(pAnswer * totalChars + 0.0001);
+          var textTop = divY + lineH * 0.85, rem = revealed, curX = lx, curY = textTop, typing = revealed < totalChars;
+          for (var li = 0; li < lines.length; li++) {
+            var L = lines[li], take = Math.max(0, Math.min(L.length, rem));
+            var yy = textTop + li * lineH;
+            if (take > 0) { ctx.fillStyle = ink(0.84); ctx.fillText(L.slice(0, take), lx, yy); }
+            if (rem <= L.length) { curX = lx + ctx.measureText(L.slice(0, take)).width; curY = yy; break; }
+            rem -= L.length;
+          }
+          // blinking block cursor while typing
+          if (typing && pAnswer > 0) {
+            ctx.globalAlpha = vis * (0.35 + 0.65 * (Math.sin(t * 7) > 0 ? 1 : 0.2));
+            ctx.fillStyle = inkGold(0.95);
+            ctx.fillRect(curX + 1, curY - aFont * 0.78, aFont * 0.52, aFont * 0.95);
+            ctx.globalAlpha = vis;
+          }
+
+          // citation chips (verified case only), bottom-left
+          var cyb = by + bh - pad - 9;
+          if (C.ok && pAnswer > 0.6) {
+            ctx.globalAlpha = vis * Math.min(1, (pAnswer - 0.6) / 0.3);
+            ctx.font = "500 " + Math.max(7, w * 0.0088) + "px 'JetBrains Mono', ui-monospace, monospace";
+            var labels = ["PROTOCOLE", "PARTENAIRES"];
+            var chx = lx;
+            for (var cc = 0; cc < labels.length; cc++) {
+              var tw = ctx.measureText(labels[cc]).width, chw = tw + 18;
+              ctx.beginPath();
+              ctx.moveTo(chx + 4, cyb); ctx.arcTo(chx + chw, cyb, chx + chw, cyb + 16, 5);
+              ctx.arcTo(chx + chw, cyb + 16, chx, cyb + 16, 5); ctx.arcTo(chx, cyb + 16, chx, cyb, 5);
+              ctx.arcTo(chx, cyb, chx + chw, cyb, 5); ctx.closePath();
+              ctx.strokeStyle = ink(0.3); ctx.lineWidth = 1; ctx.stroke();
+              ctx.beginPath(); ctx.arc(chx + 9, cyb + 8, 1.8, 0, TAU); ctx.fillStyle = inkGold(0.85); ctx.fill();
+              ctx.fillStyle = ink(0.55); ctx.fillText(labels[cc], chx + 15, cyb + 11);
+              chx += chw + 8;
+            }
+            ctx.globalAlpha = vis;
+          }
+
+          // verdict badge: check (verified) or cross (out of scope)
+          if (pBadge > 0) {
+            var b = easeBack(pBadge), vbr = Math.min(w, h) * 0.052 * b;
+            var vbx = bx + bw - pad - vbr * 0.2, vby = by + pad + vbr * 0.2;
+            drawWhirl(ctx, t, vbx, vby, streaks, 0.3 * pBadge);
+            ctx.beginPath(); ctx.arc(vbx, vby, vbr, 0, TAU); ctx.fillStyle = ink(0.9); ctx.fill();
+            ctx.globalCompositeOperation = "destination-out";
+            ctx.strokeStyle = "rgba(0,0,0,1)"; ctx.lineWidth = Math.max(2, vbr * 0.17); ctx.lineCap = "round"; ctx.lineJoin = "round";
+            ctx.beginPath();
+            if (C.ok) { // check
+              ctx.moveTo(vbx - vbr * 0.4, vby + vbr * 0.02); ctx.lineTo(vbx - vbr * 0.08, vby + vbr * 0.32); ctx.lineTo(vbx + vbr * 0.44, vby - vbr * 0.32);
+            } else { // cross
+              ctx.moveTo(vbx - vbr * 0.32, vby - vbr * 0.32); ctx.lineTo(vbx + vbr * 0.32, vby + vbr * 0.32);
+              ctx.moveTo(vbx + vbr * 0.32, vby - vbr * 0.32); ctx.lineTo(vbx - vbr * 0.32, vby + vbr * 0.32);
+            }
+            ctx.stroke();
+            ctx.globalCompositeOperation = "source-over";
+          }
+        }
+        ctx.restore();
+
+        // caption
+        ctx.font = "500 " + Math.max(8, w * 0.0108) + "px 'JetBrains Mono', ui-monospace, monospace";
+        ctx.textAlign = "left"; ctx.fillStyle = ink(0.42);
+        var cap = pBadge > 0.5 ? C.cap : (pAnswer > 0.02 ? "COMPOSING ANSWER…" : "RETRIEVING…");
+        ctx.fillText(cap, P, h - P + 2);
+      }
+    };
+  }
+
+  var anims = { rails: rails, yieldCurve: yieldCurve, vault: vault, compareChart: compareChart, dashboard: dashboard, taxstack: taxstack, lumi: lumi, security: security, vaultlock: vaultlock, payments: payments, sparkline: sparkline, ledger: ledger, shield: shield, flow: flow, separator: separator, ambient: ambient };
 
   function auto() {
     document.querySelectorAll("canvas[data-anim]").forEach(function (c) {

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lumenary — Treasury Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="lumenary.css" />
+<link rel="stylesheet" href="simulator.css" />
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="index.html" class="brand"><span class="mk"><i></i></span>Lumenary</a>
+    <div class="nav-links">
+      <a href="index.html#platform">Platform</a>
+      <a href="index.html#compliance">Compliance</a>
+      <a href="simulator.html" aria-current="page">Simulator</a>
+      <a href="index.html#faq">FAQ</a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-soc">
+        <a href="https://www.linkedin.com/company/lumenarytreasury/" target="_blank" rel="noopener noreferrer" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="https://www.linkedin.com/company/lumenarytreasury/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></a>
+      </div>
+      <a href="index.html#cta" class="btn btn-ghost">Launch app <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+    </div>
+  </div>
+</nav>
+
+<main class="sim-main">
+
+  <!-- ============ HERO ============ -->
+  <section class="sim-hero" data-screen-label="Simulator hero">
+    <div class="bp-field"></div>
+    <div class="wrap">
+      <div class="sim-eyebrow-row">
+        <span class="eyebrow">Treasury simulator</span>
+        <span class="live-pill"><span class="live-dot"></span><span id="live-rate-pill">Live · Bank of Canada policy rate</span></span>
+      </div>
+      <h1 class="serif">What is idle cash<br>costing your business?</h1>
+      <p class="lede">Enter a balance and see what it would have earned with <strong style="color:var(--ink);font-weight:500">Lumenary</strong> versus sitting in a Canadian business account — using real onchain history and the live Bank&nbsp;of&nbsp;Canada rate.</p>
+    </div>
+  </section>
+
+  <!-- ============ TOOL ============ -->
+  <section class="sim-tool">
+    <div class="wrap">
+      <div class="sim-grid">
+
+        <!-- inputs -->
+        <div class="sim-inputs">
+          <h2>Your treasury</h2>
+
+          <div class="field">
+            <label for="in-amount">Idle balance</label>
+            <div class="amount-wrap">
+              <span class="cur" id="cur-sym">$</span>
+              <input type="number" id="in-amount" value="100000" min="1000" step="5000" inputmode="numeric" />
+              <div class="cur-toggle" role="group" aria-label="Currency">
+                <button type="button" id="cur-usd" aria-pressed="true">USD</button>
+                <button type="button" id="cur-cad" aria-pressed="false">CAD</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="vsel-trigger">Vault</label>
+            <div class="vsel" id="vsel">
+              <button type="button" class="vsel-trigger" id="vsel-trigger" aria-haspopup="listbox" aria-expanded="false">
+                <span class="vsel-cur" id="vsel-cur">Average of all MetaMorpho vaults</span>
+                <span class="vsel-chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </button>
+              <div class="vsel-panel" id="vsel-panel" role="listbox" aria-label="Vault"></div>
+            </div>
+            <div class="hint" id="vault-hint" style="margin-top:8px">Routed through Morpho Blue · curated MetaMorpho</div>
+          </div>
+
+          <div class="field">
+            <label>Period <span class="hint">— backtested on real history</span></label>
+            <div class="seg" id="seg-period" role="group" aria-label="Period">
+              <button type="button" data-months="3">3M</button>
+              <button type="button" data-months="6">6M</button>
+              <button type="button" data-months="12" aria-pressed="true">1Y</button>
+              <button type="button" data-months="24">2Y</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="in-rate">Canadian bank rate</label>
+            <div class="rate-field">
+              <span class="hint">Annual</span>
+              <span><input type="number" id="in-rate" value="2.25" min="0" max="10" step="0.05" /><span class="pct">%</span></span>
+            </div>
+            <div class="rate-meta" id="rate-meta">Bank of Canada policy rate — <a href="https://www.bankofcanada.ca/rates/" target="_blank" rel="noopener">source</a></div>
+          </div>
+
+          <button id="btn-run" class="btn btn-dark sim-run">
+            <span class="sim-btn-text">Run the comparison</span>
+            <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+        </div>
+
+        <!-- results -->
+        <div class="sim-results">
+          <div class="sim-loading" id="loading"><div class="spin"><svg viewBox="-100 -100 200 200"><path d="M0,-80 L21,-21 L80,0 L21,21 L0,80 L-21,21 L-80,0 L-21,-21 Z" fill="none" stroke="var(--accent)" stroke-width="10"/></svg></div></div>
+
+          <p class="res-head" id="res-head">Crunching real onchain history…</p>
+          <p class="res-sub" id="res-sub"></p>
+
+          <div class="chart-wrap">
+            <svg id="chart" viewBox="0 0 640 300" preserveAspectRatio="none" aria-label="Lumenary vs Canadian bank account"></svg>
+            <div class="chart-legend">
+              <span class="lg defi"><i></i> Lumenary vault</span>
+              <span class="lg tradfi"><i></i> Canadian bank account</span>
+              <span class="lg"><span class="sw" style="background:color-mix(in srgb,var(--accent) 22%,transparent)"></span> Yield you'd capture</span>
+            </div>
+          </div>
+
+          <div class="stat-row" id="stat-row">
+            <div class="stat"><div class="v" id="st-value">—</div><div class="k">Vault value</div></div>
+            <div class="stat"><div class="v" id="st-defi">—</div><div class="k">Yield earned</div></div>
+            <div class="stat"><div class="v" id="st-bank">—</div><div class="k">Bank would earn</div></div>
+            <div class="stat accent" id="stat-gap-box"><div class="v" id="st-gap">—</div><div class="k"><i id="st-gap-label" title="Extra you would have captured with Lumenary versus the bank, over the period.">Cost of idle cash</i></div></div>
+          </div>
+
+          <div class="shares">
+            <div class="ttl">Deposit → shares → value</div>
+            <div class="shares-flow">
+              <div class="sh-cell"><div class="sh-v" id="sh-deposit">—</div><div class="sh-k">You deposit</div></div>
+              <span class="sh-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <div class="sh-cell"><div class="sh-v" id="sh-shares">—</div><div class="sh-k">vault shares @ <span id="sh-price">—</span></div></div>
+              <span class="sh-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <div class="sh-cell"><div class="sh-v" id="sh-value">—</div><div class="sh-k">worth today</div></div>
+            </div>
+            <div class="share-results-line">
+              <span id="share-note">Your shares represent a direct claim on the vault — Lumenary never holds your funds.</span>
+            </div>
+          </div>
+
+          <div class="sim-error" id="error"></div>
+          <div class="sampled-badge" id="sampled"><i></i> <span>Showing illustrative sample data — data feed unavailable right now.</span></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HISTORICAL PERFORMANCE ============ -->
+  <section class="sim-hist" data-screen-label="Historical performance">
+    <div class="wrap">
+      <div class="hist-head">
+        <div>
+          <span class="eyebrow">Track record</span>
+          <h2 class="h-sec serif" style="margin-top:12px">Historical vault performance</h2>
+        </div>
+        <p class="hist-note">Net APY and share-price growth across the curated MetaMorpho vaults Lumenary routes into, with the blended average.</p>
+      </div>
+      <div class="vault-table" id="vault-table">
+        <div class="vault-row head">
+          <span>Vault</span>
+          <span class="text-r">Net APY</span>
+          <span class="text-r hide-sm">TVL</span>
+          <span class="text-r hide-sm">Share price</span>
+          <span class="text-r">Period <span id="hist-period-lbl">return</span></span>
+        </div>
+        <!-- rows injected -->
+      </div>
+      <p class="rate-meta" style="margin-top:14px;text-align:right" id="hist-asof">Historical · Morpho, net of fees</p>
+    </div>
+  </section>
+
+  <!-- ============ EDUCATIONAL (Finary structure) ============ -->
+  <section class="sim-edu" data-screen-label="How it works">
+    <div class="wrap">
+      <div class="edu-grid">
+        <nav class="edu-nav" id="edu-nav">
+          <a href="#how" class="active">How to use the simulator</a>
+          <a href="#results">Understanding the results</a>
+          <a href="#why">Why idle treasury costs you</a>
+        </nav>
+        <div class="edu-body">
+          <div class="edu-block" id="how">
+            <h3 class="serif">How to use the simulator</h3>
+            <p>Start with the <b>idle balance</b> your business keeps in cash — the working capital that sits in a chequing or savings account between obligations. Choose a <b>vault</b>: each is a curated MetaMorpho strategy on Morpho Blue, or pick the <b>blended average</b> of all of them. Then set the <b>period</b> you want to look back over.</p>
+            <p>The simulator replays the vault's <b>real share price</b> over that window. When you deposit, your capital buys vault <b>shares</b> at the prevailing price; as the strategy earns, the share price rises, so the same shares are worth more. We convert that back to dollars so you can read the result like a bank statement.</p>
+            <p>The <b>Canadian bank rate</b> defaults to the live Bank of Canada policy rate — the generous end of what idle cash earns in TradFi. Adjust it to match your own account if you'd like a stricter comparison.</p>
+          </div>
+          <div class="edu-block" id="results">
+            <h3 class="serif">Understanding the results</h3>
+            <p>The chart plots two paths for the same starting balance: your capital in a <b>Lumenary vault</b> (gold) versus the same money in a <b>Canadian bank account</b> (ink, dashed). The shaded band between them is the <b>yield you'd capture</b> by not leaving cash idle.</p>
+            <p><b>Vault value</b> is what your shares are worth at the end of the period. <b>Yield earned</b> is the gain on top of your deposit. <b>Bank would earn</b> compounds your balance at the Canadian rate over the same days. <b>Cost of idle cash</b> is the difference — the money left on the table.</p>
+            <p>Everything is <b>net of vault fees</b> and based on realised history. Past performance does not predict future results, and yields onchain are variable.</p>
+          </div>
+          <div class="edu-block" id="why">
+            <h3 class="serif">Why idle treasury costs you</h3>
+            <p>Most Canadian businesses hold weeks or months of runway in accounts paying close to nothing. Against inflation, that balance loses purchasing power every quarter it sits still. The gap compounds: a few points of yield on six figures, over a few years, is often the difference between a hire and a hiring freeze.</p>
+            <p>Banks do offer institutional rates — but usually only if you <b>lock the money away</b> in a term deposit or GIC, exactly the capital you might need next week for payroll, suppliers or an opportunity. Lumenary is built around that tension: it reaches for the same <b>institutional-grade yield</b> while keeping your treasury <b>liquid and withdrawable</b>, so operating flexibility is never the price of a better rate.</p>
+            <p>It isn't a replacement for your bank. Think of it as a way to <b>diversify</b> where idle cash sits — capturing yield on the portion you aren't using this week, without giving up the day-to-day access your operations depend on. Lumenary keeps the treasury <b>non-custodial</b> — your funds live in a smart account only your Passkeys can move — while automating the Canadian tax paperwork (T5, ACB, T1135, CARF&nbsp;2026). The point of this tool isn't to promise a number; it's to make the cost of standing still visible. <a href="index.html#platform" class="ref">See how the platform works</a>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="sim-cta">
+    <div class="wrap">
+      <div class="cta-card">
+        <h2 class="serif">Put your idle treasury <span class="grad">to work.</span></h2>
+        <p>Join the private beta — no platform fee, no lock-up. Onboard your business and see your own numbers, live.</p>
+        <div class="btn-row">
+          <a href="index.html#cta" class="btn cta-gold">Join the private beta <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+          <a href="index.html" class="btn cta-ghost-d">Back to overview <span class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <p class="sim-disc">The illustration and figures shown are not a forecast of future investment performance; they replay historical, net-of-fee share-price data only and are provided for illustration. Onchain yield is variable and carries risk, including loss of principal. Lumenary is non-custodial and does not provide financial, investment or tax advice. Rates sourced live from Morpho and the Bank of Canada where available.</p>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-in">
+      <a href="index.html" class="brand" style="font-size:17px"><span class="mk"><i></i></span>Lumenary</a>
+      <div class="foot-links">
+        <a href="index.html#platform">Platform</a><a href="index.html#compliance">Compliance</a><a href="simulator.html">Simulator</a><a href="index.html#faq">FAQ</a><a href="#">Privacy</a><a href="#">Terms</a>
+      </div>
+      <span class="foot-cc">© 2026 Lumenary · Montréal · CA-CENTRAL</span>
+    </div>
+    <p class="disc">Yields are variable and not guaranteed. Lumenary is non-custodial and does not provide financial, investment or tax advice. Digital-asset yield carries risk, including loss of principal. Figures shown are illustrative. FINTRAC compliance is provided via licensed partners.</p>
+  </div>
+</footer>
+
+<template id="__bundler_thumbnail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#1B1A16"/><path d="M18 70 C40 64 60 44 82 22" fill="none" stroke="#C7A24E" stroke-width="5"/><path d="M18 74 C40 72 60 68 82 62" fill="none" stroke="#F1EDE0" stroke-width="3" stroke-dasharray="5 5"/></svg>
+</template>
+
+<script src="sim-engine.js"></script>
+<script src="sim-ui.js"></script>
+</body>
+</html>
